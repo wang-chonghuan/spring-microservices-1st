@@ -16,7 +16,8 @@ public class ChallengeServiceImpl implements ChallengeService {
 
     private final UserRepository userRepository;
     private final ChallengeAttemptRepository attemptRepository;
-    private final GamificationServiceClient gameClient;
+    //private final GamificationServiceClient gameClient;
+    private final ChallengeEventPub challengeEventPub;
     @Override
     public ChallengeAttempt verifyAttempt(ChallengeAttemptDTO attemptDTO) {
         // Check if the user already exists for that alias, otherwise create it
@@ -46,7 +47,10 @@ public class ChallengeServiceImpl implements ChallengeService {
         ChallengeAttempt storedAttempt = attemptRepository.save(checkedAttempt);
 
         // 同步接口 ，发送游戏尝试到gamification服务
-        gameClient.sendAttempt(storedAttempt);
+        // gameClient.sendAttempt(storedAttempt);
+
+        // publish an event to notify potentially interested subscribers
+        challengeEventPub.publishChallengeSolved(storedAttempt);
 
         return storedAttempt;
     }
