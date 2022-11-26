@@ -1,7 +1,7 @@
 package microservices.book.gamification.game;
 
 import lombok.RequiredArgsConstructor;
-import microservices.book.gamification.challenge.ChallengeSolvedDTO;
+import microservices.book.gamification.challenge.ChallengeSolvedEvent;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ public class GameController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    void postResult(@RequestBody ChallengeSolvedDTO dto) {
+    void postResult(@RequestBody ChallengeSolvedEvent dto) {
         gameService.newAttemptFromUser(dto);
     }
 }
